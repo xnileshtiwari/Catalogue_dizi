@@ -17,7 +17,7 @@ def to_markdown(text):
                 text = text.replace('•', '  *')
                 return (textwrap.indent(text, '> ', predicate=lambda _: True))
 #get your API key from "https://makersuite.google.com/app/apikey"
-GOOGLE_API_KEY='AIzaSyBdYYO9JDk5HNv12Ul8q1tcfjSRRzLJ-ZE'
+GOOGLE_API_KEY='AIzaSyDNuMTckAlnvEZjl57C-pO2oZPW4W3sbYw'
 genai.configure(api_key=GOOGLE_API_KEY)
 
 
@@ -92,7 +92,7 @@ def the_country():
     model = genai.GenerativeModel('gemini-pro-vision')
     response = model.generate_content(img)
     to_markdown(response.text)    
-    response = model.generate_content(["I provided you image of an product, you have to search using info you have then tell me the country origin of the product.% please respond only with country name name, if you don't find country of origin please respond 'Sorry, We’re in beta. Consider adding this manually, fixing it soon.'", img], stream=True)
+    response = model.generate_content(["I provided you image of an product, you have to search using info you have then tell me the country origin of the product.% please respond only with country name name, if you don't find country of origin please respond 'AIzaSyDNuMTckAlnvEZjl57C-pO2oZPW4W3sbYw'", img], stream=True)
     response.resolve()
     to_markdown(response.text)
     return response.text
