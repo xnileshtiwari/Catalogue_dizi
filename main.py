@@ -2,12 +2,19 @@ import os
 import sys
 import pathlib
 import time
+import random
+import string
 import textwrap
 import PIL.Image
 import streamlit as st
 from PIL import Image
 import numpy as np
 import google.generativeai as genai
+import time
+import numpy as np
+import pandas as pd
+import streamlit as st
+
 
 
 
@@ -42,7 +49,6 @@ col2.image(image, width=200, clamp=True)
 
 
 
-
 #----------- Gemini Vision -----------------------
 def vision():
     img = PIL.Image.open(uploaded_file)
@@ -59,11 +65,6 @@ def vision():
 
 
 
-title = st.text_input('Title', vision())
-
-
-
-
 def description():
     model = genai.GenerativeModel('gemini-pro')
     text = vision()
@@ -71,7 +72,6 @@ def description():
     response = model.generate_content(prompt)
     return response.text
 
-title = st.text_area('Description', description())
 
 
 
@@ -92,7 +92,7 @@ def the_country():
     model = genai.GenerativeModel('gemini-pro-vision')
     response = model.generate_content(img)
     to_markdown(response.text)    
-    response = model.generate_content(["I provided you image of an product, you have to search using info you have then tell me the country origin of the product.% please respond only with country name name, if you don't find country of origin please respond 'AIzaSyDNuMTckAlnvEZjl57C-pO2oZPW4W3sbYw'", img], stream=True)
+    response = model.generate_content(["I provided you image of an product, you have to search using info you have then tell me the country origin of the product.% please respond only with country name name, if you don't find country of origin please respod  'Not found :( Sorry, We’re in beta. Consider adding this manually, fixing it soon.'", img], stream=True)
     response.resolve()
     to_markdown(response.text)
     return response.text
@@ -121,10 +121,23 @@ def the_contact():
     return response.text
 
 
+
+def generate_random_sku(length=12):
+    characters = string.ascii_uppercase + string.digits
+    return "".join(random.choice(characters) for _ in range(length))
+
+
+
+
+
+
+
+
+
     
-
-
-sku = st.text_input('SKU ID', '0042200100422001')
+title = st.text_input('Title', vision())
+Description = st.text_area('Description', description())
+sku = st.text_input('SKU ID', generate_random_sku())
 Country = st.text_input('Country of origin', the_country())
 Brand = st.text_input('Brand', the_brand())
 Weight = st.text_input('Weight',the_weight())
@@ -133,4 +146,3 @@ Contact = st.text_input('Contact',the_contact())
 
 
 st.stop()
-
