@@ -24,8 +24,7 @@ def to_markdown(text):
                 text = text.replace('•', '  *')
                 return (textwrap.indent(text, '> ', predicate=lambda _: True))
 #get your API key from "https://makersuite.google.com/app/apikey"
-GOOGLE_API_KEY='AIzaSyDNuMTckAlnvEZjl57C-pO2oZPW4W3sbYw'
-genai.configure(api_key=GOOGLE_API_KEY)
+genai.configure(api_key=os.environ['API_KEY'])
 
 
 
