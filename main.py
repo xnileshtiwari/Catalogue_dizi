@@ -66,7 +66,7 @@ def title():
     model = genai.GenerativeModel('gemini-pro-vision')
     response = model.generate_content(img)
     to_markdown(response.text)
-    response = model.generate_content(["You are a catalogues digitizer for a online store, your job is to see image of the product and come up with short and SEO friendly product title. %s please respont only with product title.", img], stream=True)
+    response = model.generate_content(["You are a catalogues digitizer for a online store, your job is to see image of the product and come up with short and SEO friendly product title and please do not include product weights in tile. %s please respont only with product title.", img], stream=True)
     response.resolve()
     to_markdown(response.text)
     return response.text
