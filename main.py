@@ -30,7 +30,7 @@ genai.configure(api_key=GOOGLE_API_KEY)
 
 
 
-st.title("Automating your catalogue.")
+st.title("Launch Your Products Faster🚀")
 
 
 # Create a file uploader widget with a label and accepted file types
@@ -50,13 +50,24 @@ col2.image(image, width=200, clamp=True)
 
 
 #----------- Gemini Vision -----------------------
+
 def vision():
     img = PIL.Image.open(uploaded_file)
     model = genai.GenerativeModel('gemini-pro-vision')
     response = model.generate_content(img)
     to_markdown(response.text)
-    prompt = "You are a experienced and highly skilled copywriter who is expert at writing product titles, please write short and crisp product title. %s.please respond only with title of the product image i am providing you"
-    response = model.generate_content(["What do you see in this image%s please respont only with main object text.", img], stream=True)
+    response = model.generate_content(["You are a digital catalogue maker your job is to analyse the image of product to be sold. you have to see and come up with relevant details about that product and respond with information about the product. %s please respond with information only", img], stream=True)
+    response.resolve()
+    to_markdown(response.text)
+    return response.text
+
+
+def title():
+    img = PIL.Image.open(uploaded_file)
+    model = genai.GenerativeModel('gemini-pro-vision')
+    response = model.generate_content(img)
+    to_markdown(response.text)
+    response = model.generate_content(["You are a catalogues digitizer for a online store, your job is to see image of the product and come up with short and SEO friendly product title. %s please respont only with product title.", img], stream=True)
     response.resolve()
     to_markdown(response.text)
     return response.text
@@ -68,7 +79,18 @@ def vision():
 def description():
     model = genai.GenerativeModel('gemini-pro')
     text = vision()
-    prompt = ("You are a experienced and highly skilled copywriter who is expert at writing product descriptions, please write short and persuasive product description within 100 words %s.please respond only with description of the product i am providing you. take inspiration from this description" % text)
+    prompt = ("You are a experienced and highly skilled copywriter who is expert at writing product descriptions, please write short and persuasive product description within 100 words %s.please respond only with description of the product i am providing you." % text)
+    response = model.generate_content(prompt)
+    return response.text
+
+
+
+
+
+def benefits():
+    model = genai.GenerativeModel('gemini-pro')
+    text = vision()
+    prompt = ("You are a experienced and highly skilled copywriter who is expert at writing product benefits, please write benefits of the product you are provided with %s. Keep it short and respond only with benefits of the product i am providing you." % text)
     response = model.generate_content(prompt)
     return response.text
 
@@ -80,7 +102,7 @@ def the_brand():
     model = genai.GenerativeModel('gemini-pro-vision')
     response = model.generate_content(img)
     to_markdown(response.text)    
-    response = model.generate_content(["I provided you image of an product, you have to tell me brand of the product if visible in image.% please respond only with actual name, if no weights provided respond 'Image do not contains this information'", img], stream=True)
+    response = model.generate_content(["I provided you image of an product, you have to tell me brand of the product if visible in image.% please respond only with actual brand name, if no brand name provided respond with 'Image do not contains this information.'", img], stream=True)
     response.resolve()
     to_markdown(response.text)
     return response.text
@@ -104,18 +126,18 @@ def the_weight():
     model = genai.GenerativeModel('gemini-pro-vision')
     response = model.generate_content(img)
     to_markdown(response.text)
-    response = model.generate_content(["I provided you image of an product, you have to search using info you have then tell me the weight of the product.% please respond only with actual weight, if no weights provided respond  'Not found :( Sorry, We’re in beta. Consider adding this manually, fixing it soon.'", img], stream=True)
+    response = model.generate_content(["I provided you image of an product, you have to search using info you have then tell me the weight of the product.% please respond only with actual weight, if no weights provided respond  'Provided image do not contains this information.'", img], stream=True)
     response.resolve()
     to_markdown(response.text)
     return response.text
 
 
-def the_contact():
+def the_colour():
     img = PIL.Image.open(uploaded_file)
     model = genai.GenerativeModel('gemini-pro-vision')
     response = model.generate_content(img)
     to_markdown(response.text)    
-    response = model.generate_content(["I provided you image of an prodect, please tell me only mobile number and email id of the brand making this product.% use image or your data to come up with details please respond only with actual email id and mobile number. if no details provided respond 'Not found :( Sorry, We’re in beta. Consider adding this manually, fixing it soon.'", img], stream=True)
+    response = model.generate_content(["You are a digital catalogue maker, I provided you image of an prodect, Tell me colour of this product, please only respond with actual colour. Only tell me if the information of colour is relevant to the product if the product is something wearable only then tell the colour otherwise say 'Information is not relevant for given product.'", img], stream=True)
     response.resolve()
     to_markdown(response.text)
     return response.text
@@ -134,15 +156,36 @@ def generate_random_sku(length=12):
 
 
 
-    
-title = st.text_input('Title', vision())
-Description = st.text_area('Description', description())
 sku = st.text_input('SKU ID', generate_random_sku())
-Country = st.text_input('Country of origin', the_country())
-Brand = st.text_input('Brand', the_brand())
-Weight = st.text_input('Weight',the_weight())
-Instructions = st.text_input('Instructions','Please refer to the product')
-Contact = st.text_input('Contact',the_contact())
 
+
+with st.spinner('Generating title...'):
+   titles = st.text_input('Title', title())
+
+
+
+
+with st.spinner('Generating description...'):
+    Description = st.text_area('Description', description())
+
+
+with st.spinner('Identifying colour...'):
+    Colour = st.text_input('Colour',the_colour())
+
+with st.spinner('Filling brand...'):
+    Brand = st.text_input('Brand', the_brand())
+
+with st.spinner('Filling country...'):
+    Country = st.text_input('Country of origin', the_country())
+
+with st.spinner('Filling weights...'):
+    Weight = st.text_input('Weight',the_weight())
+
+with st.spinner('Writing benefits...'):
+    Benefits = st.text_area('Product Benefits',benefits())
+
+
+
+st.divider()
 
 st.stop()
