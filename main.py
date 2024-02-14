@@ -52,6 +52,12 @@ the_country = ("I provided you image of an product, see image and read the texts
 the_weight =("I provided you image of an product, please read the texts to identify the weight, if not written search using info you have then tell me the weight of the product.% please respond only with actual weight, if no weights provided respond  'Provided image do not contains this information.'")
 benefits =("You are a experienced and highly skilled copywriter, see the image read the texts on object and write benefits of the product%s. Keep it short and respond only with benefits of the product i am providing you.")
 
+
+def generate_random_sku(length=12):
+    characters = string.ascii_uppercase + string.digits
+    return "".join(random.choice(characters) for _ in range(length))
+sku = st.text_input('SKU ID', generate_random_sku())
+
 with st.spinner('Generating...'):
     titles = st.text_input('Title', generate(title))
 with st.spinner('Generating...'):
