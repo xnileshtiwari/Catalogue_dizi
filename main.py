@@ -29,17 +29,19 @@ col2.image(image, width=200, clamp=True)
 
 
 
-start_time = time.time()
 
 
 def generate(ques):
     api_key = os.environ.get('API_KEY')
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-pro-vision', generation_config= None)
+    model = genai.GenerativeModel('gemini-pro-vision')
     img =Image.open(uploaded_file)
     response = model.generate_content([ques, img], stream = True)
     response.resolve()
-    return response.text
+    #return response.candidates[0]
+    output = response.text
+    return output
+
 
 
 price = ("See the image and identify the price of the item. and read what is the price of the item if given. please respond with only price. if price is not given respond with 'Info not available in image' ")
@@ -50,26 +52,19 @@ the_country = ("I provided you image of an product, see image and read the texts
 the_weight =("I provided you image of an product, please read the texts to identify the weight, if not written search using info you have then tell me the weight of the product.% please respond only with actual weight, if no weights provided respond  'Provided image do not contains this information.'")
 benefits =("You are a experienced and highly skilled copywriter, see the image read the texts on object and write benefits of the product%s. Keep it short and respond only with benefits of the product i am providing you.")
 
-r1 = generate(title)
-r2 = generate(description)
-r3 = generate(the_brand)
-r4 = generate(the_country)
-r5 = generate(the_weight)
-r6 = generate(benefits)
-r7 = generate(price)
-
-titles = st.text_input('Title', r1)
-Description = st.text_area('Description', r2)
-Brand = st.text_input('Brand', r3)
-Country = st.text_input('Country of origin', r4)
-with st.spinner("Generating content"):
-    price = st.text_input('Price', r7)
-Weight = st.text_input('Weight',r5)
-Benefits = st.text_area('Product Benefits',r6)
+with st.spinner('Generating...'):
+    titles = st.text_input('Title', generate(title))
+with st.spinner('Generating...'):
+    Description = st.text_area('Description',generate(description))
+with st.spinner('Generating...'):
+    Brand = st.text_input('Brand', generate(the_brand))
+with st.spinner('Generating...'):
+    Country = st.text_input('Country of origin', generate(the_country))
+with st.spinner('Generating...'):
+    price = st.text_input('Price', generate(price))
+with st.spinner('Generating...'):
+    Weight = st.text_input('Weight',generate(the_weight))
+with st.spinner('Generating...'):
+    Benefits = st.text_area('Product Benefits',generate(benefits))
 
 st.divider()
-
-end_time = time.time()
-elapsed_time = end_time - start_time
-print(f"Elapsed time: {elapsed_time:.6f} seconds")
-st.stop()
