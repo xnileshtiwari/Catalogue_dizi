@@ -11,6 +11,7 @@ import streamlit as st
 from concurrent.futures import ThreadPoolExecutor
 
 st.title("Launch Your Products Faster🚀")
+st.write("Please Reload if you are having any error!")
 
 
 # Create a file uploader widget with a label and accepted file types
@@ -56,8 +57,9 @@ benefits =("You are a experienced and highly skilled copywriter, see the image r
 def generate_random_sku(length=12):
     characters = string.ascii_uppercase + string.digits
     return "".join(random.choice(characters) for _ in range(length))
-sku = st.text_input('SKU ID', generate_random_sku())
 
+
+sku = st.text_input('SKU ID', generate_random_sku())
 with st.spinner('Generating...'):
     titles = st.text_input('Title', generate(title))
 with st.spinner('Generating...'):
