@@ -1,1 +1,8 @@
 google-generativeai
+langchain-google-genai
+crewai[tools]
+crewai
+pysqlite3-binary
+crewai-tools
+seo-keyword-research-tool
+streamlit-lottie
