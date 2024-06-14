@@ -8,6 +8,9 @@ https://github.com/xnileshtiwari/catalogue_dizi/assets/135645478/87e54f7a-0d31-4
 
 ## Installation
 
+```bash
+git clone https://github.com/xnileshtiwari/Catalogue_dizi.git
+```
 
 ```bash
 pip3 install requirements.txt
