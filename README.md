@@ -1,6 +1,6 @@
 # Catalogue digitization using AI Agents
 
-This is a catalogue writing system using AI agents⚡   
+This is a catalogue writing system using Autonomous AI agents⚡
 Here is a demo video🎥 of the project 
 
 
